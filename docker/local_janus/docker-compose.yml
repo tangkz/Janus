@@ -1,0 +1,17 @@
+services:
+  janus:
+    image: tangkz/janus:latest
+    ports:
+      - "7860:7860"
+    volumes:
+      - huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
+
+volumes:
+  huggingface:

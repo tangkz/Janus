@@ -1,0 +1,15 @@
+services:
+  janus:
+    build:
+      context: ../..
+      dockerfile: ./Dockerfile
+    image: tangkz/janus:latest
+    ports:
+      - "7860:7860"
+    volumes:
+      - huggingface:/root/.cache/huggingface
+    runtime: nvidia
+    command: ["python", "demo/app_januspro.py"]
+
+volumes:
+  huggingface:

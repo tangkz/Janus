@@ -1,0 +1,12 @@
+/venv/
+.dockerignore
+.gitignore
+.gitattributes
+/.idea/
+/.git/
+/janus.egg-info/
+janus_pro_tech_report.pdf
+requirements_v0.txt
+pyproject_v0.toml
+run_cmd.ps1
+/docker/janus_docker/
