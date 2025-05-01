@@ -89,20 +89,23 @@ def multimodal_understanding(image, question, seed, top_p, temperature):
     if torch.cuda.is_available():
         torch.cuda.manual_seed(seed)
 
+    # Convert the image to RGB mode (3 channels)
+    pil_img = Image.fromarray(image)
+    if pil_img.mode == 'RGBA':
+        pil_img = pil_img.convert('RGB')
+
     conversation = [
         {
             "role": "<|User|>",
             "content": f"<image_placeholder>\n{question}",
-            "images": [image],
+            "images": [np.array(pil_img)],  # Use the converted image
         },
         {"role": "<|Assistant|>", "content": ""},
     ]
 
-    pil_images = [Image.fromarray(image)]
-
     print(f"Processing input for understanding...")
     prepare_inputs = vl_chat_processor(
-        conversations=conversation, images=pil_images, force_batchify=True
+        conversations=conversation, images=[pil_img], force_batchify=True
     ).to(cuda_device, dtype=torch.bfloat16 if torch.cuda.is_available() else torch.float16)
 
     inputs_embeds = vl_gpt.prepare_inputs_embeds(**prepare_inputs)
